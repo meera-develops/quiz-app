@@ -27,25 +27,27 @@ export default function Test() {
         }
     }
 
-
-
     return (
         <View style={styles.container}>
             <Text style={styles.header}>{theQuestion.prompt}</Text>
             
             <ButtonGroup
                 buttons={theQuestion.choices}
-                selectedAnswer={selectedAnswer}
+                selectedIndex={selectedAnswer}
                 onPress={handleSelection}
                 containerStyle={styles.buttonGroupContainer}
                 vertical
+                
             />
             
             <Button
                 title="Next Question"
                 onPress={nextQuestion}
-                disabled={selectedAnswer === null}  // Disable next button if no choice is selected
-                buttonStyle={styles.nextButton}
+                disabled={selectedAnswer === null} 
+                color="warning"
+                buttonStyle={{
+                    borderRadius: 10,
+                }}
             />
         </View>
     )
@@ -62,14 +64,11 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: '#fff',
         fontWeight: 'bold',
+        marginBottom: 10,
     },
     buttonGroupContainer: {
-        width: '100%',
+        width: '20%',
         marginBottom: 20,
-    },
-    nextButton: {
-        borderRadius: 10,
-        marginTop: 20,
     },
     
 })
