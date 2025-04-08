@@ -89,9 +89,10 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         marginBottom: 20,
+        textAlign: 'center',
     },
     buttonGroupContainer: {
-        width: '20%',
+        width: '50%',
         marginBottom: 20,
     },
     checkboxContainer: {

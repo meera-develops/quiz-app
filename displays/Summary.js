@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     questionsContainer: {
-        width: '20%',
+        width: '50%',
     },
     questionContainer: {
         marginBottom: 15,
