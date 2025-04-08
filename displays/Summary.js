@@ -32,12 +32,44 @@ export default function Summary({ route, navigation }) {
 
     const { correctAnswersCount, scorePercentage } = calculateScore();
 
+    const displayAnswerChoices = (selectedAnswers, index) => {
+        const question = questions[index];
+        const correctAnswers = question.correct;
+        
+        return selectedAnswers.map((answer, answerIndex) => {
+            const isCorrect = correctAnswers.includes(answer);
+            return (
+                <Text
+                    key={answerIndex}
+                    style={[
+                        styles.answerText,
+                        isCorrect ? styles.correctAnswer : styles.incorrectAnswer,
+                    ]}
+                >
+                    {question.choices[answer]}
+                </Text>
+            );
+        });
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Summary</Text>
             <Text style={styles.resultText}>Correct Answers: {correctAnswersCount}</Text>
             <Text style={styles.resultText}>Total Questions: {questions.length}</Text>
             <Text style={styles.resultText}>Score: {scorePercentage.toFixed(2)}%</Text>
+
+            <View style={styles.questionsContainer}>
+                {questions.map((question, index) => (
+                    <View key={index} style={styles.questionContainer}>
+                        <Text style={styles.questionText}>{question.prompt}</Text>
+
+                        <View style={styles.selectedAnswersContainer}>
+                            {displayAnswerChoices(selectedAnswersList[index], index)}
+                        </View>
+                    </View>
+                ))}
+            </View>
 
             <Button
                 title="Restart"
@@ -76,5 +108,35 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 20,
         borderRadius: 10,
-    }
+    },
+    questionsContainer: {
+        width: '20%',
+    },
+    questionContainer: {
+        marginBottom: 15,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+    },
+    questionText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#000',
+        marginBottom: 10,
+    },
+    selectedAnswersContainer: {
+        marginTop: 10,
+    },
+    answerText: {
+        fontSize: 16,
+        marginBottom: 5,
+    },
+    correctAnswer: {
+        fontWeight: 'bold',
+        color: 'green',
+    },
+    incorrectAnswer: {
+        textDecorationLine: 'line-through', 
+        color: 'red',
+    },
 });
