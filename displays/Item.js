@@ -3,15 +3,13 @@ import { ButtonGroup, Button, CheckBox } from '@rneui/base';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 
-
 //then work on summary page and score calculation 
-
 
 export default function Test() {
     const route = useRoute();
     const navigation = useNavigation();
 
-    const { questionIndex, questions } = route.params
+    const { questionIndex, questions, selectedAnswersList = [] } = route.params
 
     const theQuestion = questions[questionIndex];
 
@@ -19,26 +17,28 @@ export default function Test() {
 
     const handleSelection = (index) => {
         if (theQuestion.type === "multiple-answer") {
-            // Toggle the selection for multiple-answer questions
             setSelectedAnswers((prevSelectedAnswers) => {
                 if (prevSelectedAnswers.includes(index)) {
-                    return prevSelectedAnswers.filter((i) => i !== index); // Deselect
+                    return prevSelectedAnswers.filter((i) => i !== index); //deselect
                 } else {
-                    return [...prevSelectedAnswers, index]; // Add to selection
+                    return [...prevSelectedAnswers, index]; //add to selection
                 }
             });
         } else {
-            // For multiple-choice, only allow one selection
-            setSelectedAnswers([index]); // Single choice, so just overwrite the selection
+            //for multiple-choice, only allow one selection
+            setSelectedAnswers([index]); 
         }
     };
 
     const nextQuestion = () => {
+        const updatedAnswersList = [...selectedAnswersList]; //clone the array
+        updatedAnswersList[questionIndex] = selectedAnswers;
+
         if (questionIndex + 1 < questions.length) {
             setSelectedAnswers([]);
-            navigation.navigate('Test', {questionIndex: questionIndex + 1, questions });
+            navigation.navigate('Test', {questionIndex: questionIndex + 1, questions, selectedAnswersList: updatedAnswersList });
         } else {
-            navigation.navigate('Summary');
+            navigation.navigate('Summary', { selectedAnswersList: updatedAnswersList, questions });
         }
     }
 

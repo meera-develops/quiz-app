@@ -4,16 +4,16 @@
         "prompt": "What actor plays the most recent Spider-Man?",
         "type": "multiple-choice",
         "choices": [
-            "Ben Affleck",
-            "Andrew Garfield",
-            "Toby Mcguire",
-            "Tom Holland"
+            "A. Ben Affleck",
+            "B. Andrew Garfield",
+            "C. Toby Mcguire",
+            "D. Tom Holland"
         ],
         "correct": [3]
     },
     {
         "itemID": 2,
-        "prompt": "Which of these franchies are you familar with",
+        "prompt": "Which of these franchies are you familar with?",
         "type": "multiple-answer",
         "choices": [
             "Mario",
