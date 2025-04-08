@@ -21,6 +21,7 @@ export default function Test() {
 
     const nextQuestion = () => {
         if (questionIndex + 1 < questions.length) {
+            setSelectedAnswer(null);
             navigation.navigate('Test', {questionIndex: questionIndex + 1, questions });
         } else {
             navigation.navigate('Summary');
