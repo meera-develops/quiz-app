@@ -1,0 +1,36 @@
+[
+    {
+        "itemID": 1,
+        "prompt": "What actor plays the most recent Spider-Man?",
+        "type": "multiple-choice",
+        "choices": [
+            "Ben Affleck",
+            "Andrew Garfield",
+            "Toby Mcguire",
+            "Tom Holland"
+        ],
+        "correct": [3]
+    },
+    {
+        "itemID": 2,
+        "prompt": "Which of these franchies are you familar with",
+        "type": "multiple-answer",
+        "choices": [
+            "Mario",
+            "Splatoon",
+            "The Sims",
+            "Yoshi"
+        ],
+        "correct": [0,3]
+    },
+    {
+        "itemID": 3,
+        "prompt": "Is Florida hot?",
+        "type": "true/false",
+        "choices": [
+            "Yes, of course",
+            "No, not at all"
+        ],
+        "correct": [0]
+    }
+]

@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet } from 'react-native';
 import { Button } from '@rneui/base';
 import { useNavigation } from '@react-navigation/native';
+//import questions from '../questions.json';
 
 export default function Quiz() {
     const navigation = useNavigation();
@@ -11,7 +12,7 @@ export default function Quiz() {
             <Button 
             title="Start Quiz"
             size="lg"
-            onPress={() => navigation.navigate('Question')} 
+            onPress={() => navigation.navigate('Test', {questionIndex: 0 })} 
             buttonStyle={{
                 borderRadius: 10,
             }} />
