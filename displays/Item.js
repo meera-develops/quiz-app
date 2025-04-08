@@ -1,8 +1,10 @@
 import { Text, View, StyleSheet } from 'react-native';
-import { ButtonGroup } from '@rneui/base';
-import { Button } from '@rneui/base';
+import { ButtonGroup, Button, CheckBox } from '@rneui/base';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+
+
+//then work on summary page and score calculation 
 
 
 export default function Test() {
@@ -13,15 +15,27 @@ export default function Test() {
 
     const theQuestion = questions[questionIndex];
 
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [selectedAnswers, setSelectedAnswers] = useState([]);
 
     const handleSelection = (index) => {
-        setSelectedAnswer(index);
+        if (theQuestion.type === "multiple-answer") {
+            // Toggle the selection for multiple-answer questions
+            setSelectedAnswers((prevSelectedAnswers) => {
+                if (prevSelectedAnswers.includes(index)) {
+                    return prevSelectedAnswers.filter((i) => i !== index); // Deselect
+                } else {
+                    return [...prevSelectedAnswers, index]; // Add to selection
+                }
+            });
+        } else {
+            // For multiple-choice, only allow one selection
+            setSelectedAnswers([index]); // Single choice, so just overwrite the selection
+        }
     };
 
     const nextQuestion = () => {
         if (questionIndex + 1 < questions.length) {
-            setSelectedAnswer(null);
+            setSelectedAnswers([]);
             navigation.navigate('Test', {questionIndex: questionIndex + 1, questions });
         } else {
             navigation.navigate('Summary');
@@ -31,20 +45,32 @@ export default function Test() {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>{theQuestion.prompt}</Text>
-            
-            <ButtonGroup
-                buttons={theQuestion.choices}
-                selectedIndex={selectedAnswer}
-                onPress={handleSelection}
-                containerStyle={styles.buttonGroupContainer}
-                vertical
-                
-            />
+
+            {theQuestion.type === "multiple-choice" ? (
+                <ButtonGroup
+                    buttons={theQuestion.choices}
+                    selectedIndex={selectedAnswers[0]}
+                    onPress={handleSelection}
+                    containerStyle={styles.buttonGroupContainer}
+                    vertical
+                    
+                />
+            ) : (
+                theQuestion.choices.map((choice, index) => (
+                    <CheckBox 
+                        key={index}
+                        title={choice}
+                        checked={selectedAnswers.includes(index)}
+                        onPress={() => handleSelection(index)}
+                        containerStyle={styles.checkboxContainer}
+                    />
+                ))
+            )}
             
             <Button
                 title="Next Question"
                 onPress={nextQuestion}
-                disabled={selectedAnswer === null} 
+                disabled={selectedAnswers.length === 0} 
                 color="warning"
                 buttonStyle={{
                     borderRadius: 10,
@@ -65,11 +91,16 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: '#fff',
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 20,
     },
     buttonGroupContainer: {
         width: '20%',
         marginBottom: 20,
     },
+    checkboxContainer: {
+        backgroundColor: 'white',
+        marginBottom: 30,
+        borderRadius: 10,
+    }
     
 })
