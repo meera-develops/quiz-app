@@ -9,13 +9,17 @@ export default function Summary({ route, navigation }) {
 
         selectedAnswersList.forEach((selectedAnswers, index) => {
             const correctAnswers = questions[index].correct;
-            
+
             if (questions[index].type === 'multiple-choice') {
                 if (correctAnswers.includes(selectedAnswers[0])) {
                     correctAnswersCount += 1;
                 }
             } else if (questions[index].type === 'multiple-answer') {
                 if (selectedAnswers.length > 0) {
+                    correctAnswersCount += 1;
+                }
+            } else if (questions[index].type === 'true/false') {
+                if (correctAnswers.includes(selectedAnswers[0])) {
                     correctAnswersCount += 1;
                 }
             }
@@ -41,7 +45,11 @@ export default function Summary({ route, navigation }) {
                 questions, 
                 selectedAnswersList: new Array(questions.length).fill([]) 
                 })}
-                buttonStyle={styles.button}
+                color="secondary"
+                buttonStyle={{
+                    borderRadius: 10,
+                }}
+                size="lg"
             />
         </View>
     );
@@ -63,7 +71,7 @@ const styles = StyleSheet.create({
     resultText: {
         fontSize: 20,
         color: '#fff',
-        marginBottom: 10,
+        marginBottom: 30,
     },
     button: {
         marginTop: 20,

@@ -1,9 +1,7 @@
 import { Text, View, StyleSheet } from 'react-native';
 import { ButtonGroup, Button, CheckBox } from '@rneui/base';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
-
-//then work on summary page and score calculation 
+import { useState } from 'react'; 
 
 export default function Test() {
     const route = useRoute();
@@ -25,7 +23,6 @@ export default function Test() {
                 }
             });
         } else {
-            //for multiple-choice, only allow one selection
             setSelectedAnswers([index]); 
         }
     };
