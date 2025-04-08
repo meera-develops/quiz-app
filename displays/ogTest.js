@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from '@rneui/base';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 import questions from '../questions.json';
 
-export default function Question() {
+export default function ogTest() {
     const route = useRoute();
     const navigation = useNavigation();
     
@@ -21,12 +22,20 @@ export default function Question() {
         return null;
     }
 
-    const handleAnswer = (selectedOption) => {
-        const updatedAnswers = [...selectedAnswers, {
-            questionIndex: curQuestion.itemID,
-            selectedOption,
-        }];
-        
+    const [chooseAnswer, setChooseAnswer] = useState(false);
+
+    const handleAnswerToggle = (selectedOptionIndex) => {
+        const isSelected = selectedOptions.includes(selectedOptionIndex);
+        const updatedAnswers = isSelected
+            ? selectedOptions.filter((answer) => answer !== selectedOptionIndex) // Deselect if already selected
+            : [...selectedOptions, selectedOptionIndex]; // Add if not selected
+
+        setSelectedOptions(updatedAnswers); // Update the state
+    };
+
+    const handleNext = () => {
+        const updatedAnswers = [...selectedAnswers];
+
         if (questionIndex + 1 < questions.length) {
             navigation.navigate('Test', {
                 questionIndex: questionIndex + 1,
@@ -35,15 +44,19 @@ export default function Question() {
         } else {
             navigation.navigate('Summary', { selectedAnswers: updatedAnswers });
         }
-    };
+    }
 
     const renderQuestion = () => {
         switch (curQuestion.type) {
             case 'true/false':
                 return (
                     <View style={styles.buttonContainer}>
-                        <Button title="True" onPress={() => handleAnswer(0)} />
-                        <Button title="False" onPress={() => handleAnswer(1)} />
+                        <Button title="True" onPress={() => handleAnswerToggle(0)} buttonStyle={{
+                                backgroundColor: selectedOptions.includes(0) ? '#007bff' : '#ccc', // Highlight selected
+                            }} />
+                        <Button title="False" onPress={() => handleAnswerToggle(1)} buttonStyle={{
+                                backgroundColor: selectedOptions.includes(0) ? '#007bff' : '#ccc', // Highlight selected
+                            }} />
                     </View>
                 );
 
@@ -54,7 +67,10 @@ export default function Question() {
                             <Button
                                 key={i}
                                 title={choice}
-                                onPress={() => handleAnswer(i)} // Pass the index of the choice
+                                onPress={() => handleAnswerToggle(i)}
+                                buttonStyle={{
+                                    backgroundColor: selectedOptions.includes(0) ? '#007bff' : '#ccc', // Highlight selected
+                                }} 
                             />
                         ))}
                     </View>
@@ -67,7 +83,10 @@ export default function Question() {
                             <Button
                                 key={i}
                                 title={choice}
-                                onPress={() => handleAnswer(i)} // Pass the index of the choice
+                                onPress={() => handleAnswerToggle(i)}
+                                buttonStyle={{
+                                    backgroundColor: selectedOptions.includes(0) ? '#007bff' : '#ccc', // Highlight selected
+                                }} // Pass the index of the choice
                             />
                         ))}
                     </View>
@@ -83,6 +102,12 @@ export default function Question() {
             <Text style={styles.entryText}>Question goes here</Text>
             <Text style={styles.myQuestion}>{curQuestion.prompt}</Text>
             {renderQuestion()}
+            {chooseAnswer && (
+                <Button
+                title="Next Question"
+                onPress={handleNext}
+                containerStyle={styles.nextButtonContainer} />
+            )}
         </View>
     );
 }
@@ -98,14 +123,19 @@ const styles = StyleSheet.create({
         fontSize: 30,
         color: '#fff',
         fontWeight: 'bold',
+        marginBottom: 10,
     },
     myQuestion: {
         color: 'white',
         fontSize: 20,
-        marginBottom: 20,
+        marginBottom: 10,
     },
     buttonContainer: {
         marginTop: 20,
+        width: '80%',
+    },
+    nextButtonContainer: {
+        marginTop: 30,
         width: '80%',
     },
 });

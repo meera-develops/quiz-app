@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native';
-
+//do this part 
 
 export default function Summary() {
     return (
